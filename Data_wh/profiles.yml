@@ -1,0 +1,14 @@
+Data_wh:
+  outputs:
+    dev:
+      dataset: Data_wwi
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      keyfile: D:\datawwh\Data\Data_wh\conf\data-wh-mihdatj1-0d4d2bcb707e.json
+      location: US
+      method: service-account
+      priority: interactive
+      project: data-wh-mihdatj1
+      threads: 3
+      type: bigquery
+  target: dev
