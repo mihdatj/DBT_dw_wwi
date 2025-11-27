@@ -7,11 +7,17 @@ WITH dim_customer__source AS (
 , dim_customer__rename AS (
     SELECT
         CustomerID AS Customer_key
-    , CustomerName
-    from dim_customer__source
+        , CustomerName
+    FROM dim_customer__source
 )
 
-select
- Customer_key
-, CustomerName
-from dim_customer__rename
+, dim_customer__cast_type AS (
+    SELECT 
+        Cast(Customer_key AS INTEGER) AS Customer_key
+        , Cast(CustomerName AS STRING) AS CustomerName
+    FROM dim_customer__rename
+)
+SELECT
+    Customer_key
+    , CustomerName
+FROM dim_customer__cast_type
