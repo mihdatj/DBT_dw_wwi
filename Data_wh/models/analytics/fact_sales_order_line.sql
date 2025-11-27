@@ -7,7 +7,7 @@ WITH fact_sales_order_line__source AS (
 , fact_sales_order_line__rename AS (
   SELECT
     OrderLineID  AS Sales_order_line_key
-    , OrderID AS Order_key
+    , OrderID AS Sales_Order_key
     , StockItemID  AS Product_key
     , Quantity   
     , UnitPrice  
@@ -17,7 +17,7 @@ WITH fact_sales_order_line__source AS (
 , fact_sales_order_line__cast_type AS (
   SELECT
   Cast(Sales_order_line_key AS INTEGER) AS Sales_order_line_key
-  , Cast(Order_key AS INTEGER) as Order_key
+  , Cast(Sales_Order_key AS INTEGER) as Sales_Order_key
   , Cast(Product_key AS STRING) AS Product_key
   , Cast(Quantity as INTEGER) AS Quantity 
   , Cast(UnitPrice as NUMERIC) AS UnitPrice 
@@ -26,10 +26,13 @@ WITH fact_sales_order_line__source AS (
 
 
 SELECT
-  Sales_order_line_key
-  , Order_key
-  , Product_key
-  , Quantity 
-  , UnitPrice 
-  , Quantity * UnitPrice AS Grossamount
-FROM fact_sales_order_line__cast_type
+  fact_line.Sales_order_line_key
+  , fact_line.Sales_Order_key
+  , fact_line.Product_key
+  , fact_header.Customer_key
+  , fact_line.Quantity 
+  , fact_line.UnitPrice 
+  , fact_line.Quantity * fact_line.UnitPrice  AS Grossamount
+FROM fact_sales_order_line__cast_type AS fact_line
+LEFT JOIN `data-wh-mihdatj1.Data_wwi_staging.stg_fact_sales_order` AS  fact_header
+ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
