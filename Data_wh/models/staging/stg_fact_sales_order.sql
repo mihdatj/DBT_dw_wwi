@@ -7,6 +7,7 @@ WITH stg_fact_sales_order__source AS (
     SELECT 
         OrderID AS Sales_Order_key
         , CustomerID AS Customer_key
+        , PickedByPersonID AS Picked_By_Person_key
     FROM stg_fact_sales_order__source
 )
 
@@ -14,9 +15,11 @@ WITH stg_fact_sales_order__source AS (
     SELECT
         Cast( Sales_Order_key AS INTEGER) AS Sales_Order_key
         , Cast(Customer_key AS INTEGER) AS Customer_key
+        , Cast(Picked_By_Person_key AS INTEGER) AS Picked_By_Person_key
     FROM stg_fact_sales_order__rename
 ) 
 SELECT
     Sales_Order_key
     , Customer_key
+    , Picked_By_Person_key
 FROM stg_fact_sales_order__cast_type
