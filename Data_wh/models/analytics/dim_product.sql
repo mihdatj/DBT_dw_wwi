@@ -16,7 +16,7 @@ WITH dim_product__source AS (
     SELECT
     Cast(Product_key AS INTEGER) AS Product_key
     , Cast(Product_name AS STRING) AS Product_name
-    , Cast(Brand AS String) AS Brand_name
+    , Cast(Brand_name AS String) AS Brand_name
     FROM dim_product__rename
 )
 
