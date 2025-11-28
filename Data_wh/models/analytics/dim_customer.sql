@@ -10,7 +10,7 @@ WITH dim_customer__source AS (
         , CustomerName
         , CustomerCategoryID AS CustomerCategory_key
         , BuyingGroupID AS BuyingGroup_key
-        , IsOnCreditHold AS is_on_credit_hold_BOOLEAN
+        , Coalesce( AS is_on_credit_hold_BOOLEAN, 'Invalid') AS is_on_credit_hold_BOOLEAN 
     FROM dim_customer__source
 )
 
@@ -39,9 +39,9 @@ SELECT
     dim_customer.Customer_key
     , dim_customer.CustomerName
     , dim_customer.CustomerCategory_key
-    , stg_customer.CustomerCategory_name
+    , Coalesce(stg_customer.CustomerCategory_name, 'Invalid') AS CustomerCategory_name 
     , dim_customer.BuyingGroup_key 
-    , stg_buying.BuyingGroup_name
+    , Coalesce(stg_buying.BuyingGroup_name, 'Invalid') AS BuyingGroup_name 
     , dim_customer.is_on_credit_hold
 FROM dim_customer__conver_boolean AS dim_customer 
 
