@@ -39,6 +39,15 @@ WITH dim_product__source AS (
     FROM dim_product__cast_type
 )
 
+, dim_product__Coalesce AS (
+    SELECT
+        Product_key
+        , Supplier_key
+        , Product_name
+        , COALESCE(Brand_name, 'Undefined') AS Brand_name
+        , Is_Chiller_Stock
+    FROM dim_product__converT_boolean
+)
 
 SELECT
     dim_product.Product_key
@@ -47,6 +56,6 @@ SELECT
     , dim_suppliers.Supplier_name
     , dim_product.Brand_name
     , dim_product.Is_Chiller_Stock
-FROM dim_product__converT_boolean AS dim_product
+FROM dim_product__Coalesce AS dim_product
 LEFT JOIN {{ ref("dim_suppliers") }} AS dim_suppliers
 ON dim_product.Supplier_key = dim_suppliers.Supplier_key
