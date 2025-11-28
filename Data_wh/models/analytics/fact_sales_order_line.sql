@@ -13,14 +13,14 @@ WITH fact_sales_order_line__source AS (
     , UnitPrice  
   FROM fact_sales_order_line__source
 )
-
+AS
 , fact_sales_order_line__cast_type AS (
   SELECT
   Cast(Sales_order_line_key AS INTEGER) AS Sales_order_line_key
-  , Cast(Sales_Order_key AS INTEGER) as Sales_Order_key
+  , Cast(Sales_Order_key AS INTEGER) AS Sales_Order_key
   , Cast(Product_key AS STRING) AS Product_key
-  , Cast(Quantity as INTEGER) AS Quantity 
-  , Cast(UnitPrice as NUMERIC) AS UnitPrice 
+  , Cast(Quantity AS INTEGER) AS Quantity 
+  , Cast(UnitPrice AS NUMERIC) AS UnitPrice 
   FROM fact_sales_order_line__rename
 )
 
