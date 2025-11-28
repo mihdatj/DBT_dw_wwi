@@ -33,7 +33,8 @@ WITH dim_product__source AS (
         , CASE 
             WHEN Is_Chiller_Stock IS TRUE THEN 'Chiller Stock'
             WHEN Is_Chiller_Stock IS FALSE THEN 'Not Chiller Stock'
-          ELSE 'Undefined' END
+            WHEN Is_Chiller_Stock IS NULL THEN 'Undefined'
+          ELSE 'Invalid' END
           AS Is_Chiller_Stock
     FROM dim_product__cast_type
 )
