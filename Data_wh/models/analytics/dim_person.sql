@@ -18,7 +18,19 @@ WITH dim_person__source AS (
     FROM dim_person__rename
 )
 
+, dim_person__union_all AS (
+    SELECT 
+        person_key
+        , FullName
+    FROM dim_person__cast_type
+
+    UNION ALL 
+    SELECT 
+        0 AS person_key
+        , 'Undefined' AS FullName
+)
+
 SELECT 
     person_key
     , FullName
-FROM dim_person__cast_type
+FROM dim_person__union_all

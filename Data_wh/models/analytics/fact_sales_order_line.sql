@@ -13,7 +13,7 @@ WITH fact_sales_order_line__source AS (
     , UnitPrice  
   FROM fact_sales_order_line__source
 )
-AS
+
 , fact_sales_order_line__cast_type AS (
   SELECT
   Cast(Sales_order_line_key AS INTEGER) AS Sales_order_line_key
@@ -33,6 +33,7 @@ SELECT
   , fact_line.Quantity 
   , fact_line.UnitPrice 
   , fact_line.Quantity * fact_line.UnitPrice  AS Grossamount
+  , fact_header.Picked_By_Person_key
 FROM fact_sales_order_line__cast_type AS fact_line
 LEFT JOIN {{ ref('stg_fact_sales_order')}} AS  fact_header
 ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
