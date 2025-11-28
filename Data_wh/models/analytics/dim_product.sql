@@ -41,8 +41,9 @@ WITH dim_product__source AS (
 
 SELECT
     dim_product.Product_key
-    , dim_product.Supplier_key
     , dim_product.Product_name
+    , dim_product.Supplier_key
+    , dim_suppliers.Supplier_name
     , dim_product.Brand_name
     , dim_product.Is_Chiller_Stock
 FROM dim_product__converT_boolean AS dim_product
