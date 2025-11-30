@@ -29,11 +29,11 @@ SELECT
   fact_line.Sales_order_line_key
   , fact_line.Sales_Order_key
   , fact_line.Product_key
-  , fact_header.Customer_key
+  , Coalesce(fact_header.Customer_key, -1) AS Customer_key
   , fact_line.Quantity 
   , fact_line.UnitPrice 
   , fact_line.Quantity * fact_line.UnitPrice  AS Grossamount
-  , fact_header.Picked_By_Person_key
+  , Coalesce(fact_header.Picked_By_Person_key, -1) AS Picked_By_Person_key
 FROM fact_sales_order_line__cast_type AS fact_line
 LEFT JOIN {{ ref('stg_fact_sales_order')}} AS  fact_header
 ON fact_line.Sales_Order_key = fact_header.Sales_Order_key

@@ -18,7 +18,25 @@ WITH dim_suppliers__source AS (
     FROM dim_suppliers__rename
 )
 
+, dim_product__add_undefined AS (
+    SELECT
+        Supplier_key
+        , Supplier_name
+    FROM dim_suppliers__cast_type
+
+    UNION ALL
+    SELECT
+        0 AS Supplier_key
+        , 'Undefind' AS Supplier_name
+        
+    UNION ALL
+    SELECT
+        -1 AS Supplier_key
+        , 'Invalid' AS Supplier_name
+)
+
+
 SELECT 
     Supplier_key
     , Supplier_name
-FROM dim_suppliers__cast_type
+FROM dim_product__add_undefined

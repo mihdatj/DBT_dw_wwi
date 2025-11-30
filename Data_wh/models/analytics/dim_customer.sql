@@ -10,7 +10,7 @@ WITH dim_customer__source AS (
         , CustomerName
         , CustomerCategoryID AS CustomerCategory_key
         , BuyingGroupID AS BuyingGroup_key
-        , Coalesce( AS is_on_credit_hold_BOOLEAN, 'Invalid') AS is_on_credit_hold_BOOLEAN 
+        , IsOnCreditHold AS is_on_credit_hold_BOOLEAN 
     FROM dim_customer__source
 )
 
@@ -35,15 +35,42 @@ WITH dim_customer__source AS (
         AS is_on_credit_hold
     FROM dim_customer__cast_type
 )
+
+, dim_customer__add_undefined AS (
+    SELECT
+        Customer_key
+        , CustomerName
+        , CustomerCategory_key
+        , BuyingGroup_key
+        , is_on_credit_hold
+    FROM dim_customer__conver_boolean
+
+    UNION ALL
+    SELECT
+        0 AS Customer_key
+        , 'Undefined' AS CustomerName
+        , 0 AS CustomerCategory_key
+        , 0 AS BuyingGroup_key
+        , 'Undefined' AS is_on_credit_hold
+    
+    UNION ALL
+    SELECT
+        -1 AS Customer_key
+        , 'Invalid' AS CustomerName
+        , -1 AS CustomerCategory_key
+        , -1 AS BuyingGroup_key
+        , 'Invalid' AS is_on_credit_hold
+)
+
 SELECT
     dim_customer.Customer_key
     , dim_customer.CustomerName
     , dim_customer.CustomerCategory_key
     , Coalesce(stg_customer.CustomerCategory_name, 'Invalid') AS CustomerCategory_name 
-    , dim_customer.BuyingGroup_key 
+    , Coalesce(dim_customer.BuyingGroup_key, 0) AS BuyingGroup_key
     , Coalesce(stg_buying.BuyingGroup_name, 'Invalid') AS BuyingGroup_name 
     , dim_customer.is_on_credit_hold
-FROM dim_customer__conver_boolean AS dim_customer 
+FROM dim_customer__add_undefined AS dim_customer 
 
 LEFT JOIN {{ ref('stg_customer_categories')}} AS stg_customer
     ON dim_customer.CustomerCategory_key = stg_customer.CustomerCategory_key

@@ -21,5 +21,5 @@ WITH stg_fact_sales_order__source AS (
 SELECT
     Sales_Order_key
     , Customer_key
-    , Picked_By_Person_key
+    , Coalesce(Picked_By_Person_key,0) AS Picked_By_Person_key
 FROM stg_fact_sales_order__cast_type

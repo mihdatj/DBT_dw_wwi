@@ -49,6 +49,33 @@ WITH dim_product__source AS (
     FROM dim_product__converT_boolean
 )
 
+, dim_product__add_undefined AS (
+    SELECT
+        Product_key
+        , Supplier_key
+        , Product_name
+        , Brand_name
+        , Is_Chiller_Stock
+    FROM dim_product__Coalesce
+
+    UNION ALL
+    SELECT
+        0 AS Product_key
+        , 0 AS Supplier_key
+        , 'Undefind' AS Product_name
+        , 'Undefind' AS Brand_name
+        , 'Undefind' AS Is_Chiller_Stock
+    
+    UNION ALL
+    SELECT
+        -1 AS Product_key
+        , -1 AS Supplier_key
+        , 'Invalid' AS Product_name
+        , 'Invalid' AS Brand_name
+        , 'Invalid' AS Is_Chiller_Stock
+)
+
+
 SELECT
     dim_product.Product_key
     , dim_product.Product_name
@@ -56,6 +83,6 @@ SELECT
     , COALESCE(dim_suppliers.Supplier_name, 'Invalid') AS Supplier_name
     , dim_product.Brand_name
     , dim_product.Is_Chiller_Stock
-FROM dim_product__Coalesce AS dim_product
+FROM dim_product__add_undefined AS dim_product
 LEFT JOIN {{ ref("dim_suppliers") }} AS dim_suppliers
 ON dim_product.Supplier_key = dim_suppliers.Supplier_key

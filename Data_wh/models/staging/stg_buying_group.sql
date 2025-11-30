@@ -18,7 +18,24 @@ WITH stg_buying_group__source AS(
     FROM stg_buying_group__rename
 )
 
+, stg_buying_group__add_undefined AS (
+    SELECT
+        BuyingGroup_key
+        , BuyingGroup_name
+    FROM stg_buying_group__cast_type
+    
+    UNION ALL
+    SELECT
+        0 AS BuyingGroup_key
+        , 'Undefine' AS BuyingGroup_name
+
+    UNION ALL
+    SELECT
+        -1 AS BuyingGroup_key
+        , 'Invalid' AS BuyingGroup_name
+)
+
 SELECT  
     BuyingGroup_key
     ,   BuyingGroup_name
-FROM stg_buying_group__cast_type
+FROM stg_buying_group__add_undefined
