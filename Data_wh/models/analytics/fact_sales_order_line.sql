@@ -34,6 +34,7 @@ SELECT
   , fact_line.UnitPrice 
   , fact_line.Quantity * fact_line.UnitPrice  AS Grossamount
   , Coalesce(fact_header.Picked_By_Person_key, -1) AS Picked_By_Person_key
+  , fact_header.OrderDate
 FROM fact_sales_order_line__cast_type AS fact_line
 LEFT JOIN {{ ref('stg_fact_sales_order')}} AS  fact_header
 ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
