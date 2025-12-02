@@ -9,6 +9,7 @@ WITH fact_sales_order_line__source AS (
     OrderLineID  AS Sales_order_line_key
     , OrderID AS Sales_Order_key
     , StockItemID  AS Product_key
+    , PackageTypeID as Package_Type_key
     , Quantity   
     , UnitPrice  
   FROM fact_sales_order_line__source
@@ -19,6 +20,7 @@ WITH fact_sales_order_line__source AS (
   Cast(Sales_order_line_key AS INTEGER) AS Sales_order_line_key
   , Cast(Sales_Order_key AS INTEGER) AS Sales_Order_key
   , Cast(Product_key AS STRING) AS Product_key
+  , Cast( Package_Type_key AS INTEGER) AS Package_Type_key
   , Cast(Quantity AS INTEGER) AS Quantity 
   , Cast(UnitPrice AS NUMERIC) AS UnitPrice 
   FROM fact_sales_order_line__rename
@@ -30,6 +32,8 @@ SELECT
   , fact_line.Sales_Order_key
   , fact_line.Product_key
   , Coalesce(fact_header.Customer_key, -1) AS Customer_key
+  , fact_line.Package_Type_key
+  , stg_dim_Package_type.Package_Type_Name
   , fact_line.Quantity 
   , fact_line.UnitPrice 
   , fact_line.Quantity * fact_line.UnitPrice  AS Grossamount
@@ -38,3 +42,5 @@ SELECT
 FROM fact_sales_order_line__cast_type AS fact_line
 LEFT JOIN {{ ref('stg_fact_sales_order')}} AS  fact_header
 ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
+LEFT JOIN {{ ref('stg_dim_Package_type')}} AS stg_dim_Package_type
+ON fact_line.Package_Type_key = stg_dim_Package_type.Package_Type_key

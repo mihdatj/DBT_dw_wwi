@@ -12,8 +12,10 @@ WITH stg_dim_Package_type__Source AS (
 )
 
 , stg_dim_Package_type__cast_type AS (  
-    Cast(Package_Type_key AS INTEGER) AS Package_Type_key
-    , Cast(Package_Type_Name AS STRING) AS Package_Type_Name
+    SELECT
+        Cast(Package_Type_key AS INTEGER) AS Package_Type_key
+        , Cast(Package_Type_Name AS STRING) AS Package_Type_Name
+    FROM stg_dim_Package_type__rename
 )
 
 SELECT 
