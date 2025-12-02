@@ -39,7 +39,6 @@ SELECT
   , fact_line.Product_key
   , Coalesce(fact_header.Customer_key, -1) AS Customer_key
   , fact_line.Package_Type_key
-  , stg_dim_Package_type.Package_Type_Name
   , Coalesce(fact_header.Picked_By_Person_key, -1) AS Picked_By_Person_key
   , fact_line.Quantity 
   , fact_line.UnitPrice 
@@ -54,5 +53,3 @@ SELECT
 FROM fact_sales_order_line__cast_type AS fact_line
 LEFT JOIN {{ ref('stg_fact_sales_order')}} AS  fact_header
 ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
-LEFT JOIN {{ ref('stg_dim_Package_type')}} AS stg_dim_Package_type
-ON fact_line.Package_Type_key = stg_dim_Package_type.Package_Type_key
