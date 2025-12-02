@@ -47,6 +47,6 @@ SELECT
     , COALESCE(Back_Order_key, 0) AS Back_Order_key
     , OrderDate
     , Expected_Delivery_Date 
-    , Is_Under_supply_Backordered_boolean
+    , Is_Under_supply_Backordered
     , Picking_Completed_When
 FROM stg_fact_sales_order__conver_boolean
