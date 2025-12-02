@@ -1,0 +1,25 @@
+WITH stg_dim_Delivery_Method__source AS (
+    SELECT
+        *
+    FROM `data-wh-mihdatj1.Wide_World_Importers.Application_DeliveryMethods`
+)
+
+, stg_dim_Delivery_Method__rename AS( 
+    SELECT
+        DeliveryMethodID AS Delivery_Method_key
+        , DeliveryMethodName AS Delivery_Method_Name
+    FROM stg_dim_Delivery_Method__source
+)
+
+, stg_dim_Delivery_Method__cast_type AS (
+    SELECT 
+        Cast(Delivery_Method_key AS INTEGER) AS Delivery_Method_key
+        , Cast(Delivery_Method_Name AS STRING) AS Delivery_Method_Name
+    FROM stg_dim_Delivery_Method__rename
+)
+
+SELECT
+    Delivery_Method_key
+    , Delivery_Method_Name
+FROM stg_dim_Delivery_Method__cast_type
+
