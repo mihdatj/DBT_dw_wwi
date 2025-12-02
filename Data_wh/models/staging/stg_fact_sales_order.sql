@@ -12,6 +12,7 @@ WITH stg_fact_sales_order__source AS (
         , BackorderOrderID AS Back_Order_key
         , ExpectedDeliveryDate AS Expected_Delivery_Date
         , IsUndersupplyBackordered AS Is_Under_supply_Backordered_boolean
+        , PickingCompletedWhen AS Picking_Completed_When
     FROM stg_fact_sales_order__source
 )
 
@@ -24,6 +25,7 @@ WITH stg_fact_sales_order__source AS (
         , Cast(Back_Order_key AS INTEGER) AS Back_Order_key
         , CAST(Expected_Delivery_Date AS DATE) AS Expected_Delivery_Date
         , CAST(Is_Under_supply_Backordered_boolean AS BOOLEAN) AS Is_Under_supply_Backordered_boolean
+        , Cast(Picking_Completed_When AS DATETIME) AS Picking_Completed_When
     FROM stg_fact_sales_order__rename
 ) 
 
@@ -46,4 +48,5 @@ SELECT
     , OrderDate
     , Expected_Delivery_Date 
     , Is_Under_supply_Backordered_boolean
+    , Picking_Completed_When
 FROM stg_fact_sales_order__conver_boolean
