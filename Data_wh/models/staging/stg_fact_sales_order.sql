@@ -25,7 +25,7 @@ WITH stg_fact_sales_order__source AS (
         , Cast(Back_Order_key AS INTEGER) AS Back_Order_key
         , CAST(Expected_Delivery_Date AS DATE) AS Expected_Delivery_Date
         , CAST(Is_Under_supply_Backordered_boolean AS BOOLEAN) AS Is_Under_supply_Backordered_boolean
-        , Cast(Order_Picking_Completed_When AS DATETIME) AS Order_Picking_Completed_When
+        , Cast(Order_Picking_Completed_When AS STRING) AS Order_Picking_Completed_When
     FROM stg_fact_sales_order__rename
 ) 
 

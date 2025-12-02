@@ -12,6 +12,9 @@ WITH fact_sales_order_line__source AS (
     , PackageTypeID as Package_Type_key
     , Quantity   
     , UnitPrice  
+    , TaxRate
+    , PickedQuantity
+    , PickingCompletedWhen AS line_Picking_Completed_When
   FROM fact_sales_order_line__source
 )
 
@@ -23,6 +26,9 @@ WITH fact_sales_order_line__source AS (
   , Cast( Package_Type_key AS INTEGER) AS Package_Type_key
   , Cast(Quantity AS INTEGER) AS Quantity 
   , Cast(UnitPrice AS NUMERIC) AS UnitPrice 
+  , Cast(TaxRate AS NUMERIC) AS Tax_Rate
+  , Cast(PickedQuantity AS INTEGER) AS Picked_Quantity
+  , Cast(line_Picking_Completed_When AS STRING) AS line_Picking_Completed_When
   FROM fact_sales_order_line__rename
 )
 
@@ -34,11 +40,17 @@ SELECT
   , Coalesce(fact_header.Customer_key, -1) AS Customer_key
   , fact_line.Package_Type_key
   , stg_dim_Package_type.Package_Type_Name
+  , Coalesce(fact_header.Picked_By_Person_key, -1) AS Picked_By_Person_key
   , fact_line.Quantity 
   , fact_line.UnitPrice 
   , fact_line.Quantity * fact_line.UnitPrice  AS Grossamount
-  , Coalesce(fact_header.Picked_By_Person_key, -1) AS Picked_By_Person_key
   , fact_header.OrderDate
+  , fact_line.Tax_Rate
+  , fact_line.Picked_Quantity
+  , fact_line.line_Picking_Completed_When
+  , fact_header.Expected_Delivery_Date
+  , fact_header.Is_Under_supply_Backordered
+  , fact_header.Order_Picking_Completed_When
 FROM fact_sales_order_line__cast_type AS fact_line
 LEFT JOIN {{ ref('stg_fact_sales_order')}} AS  fact_header
 ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
