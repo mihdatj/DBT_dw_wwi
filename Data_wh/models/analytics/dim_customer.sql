@@ -8,8 +8,9 @@ WITH dim_customer__source AS (
     SELECT
         customer_id AS Customer_key
         , customer_name
+        , bill_to_customer_id AS Bill_to_customer_key
         , customer_category_id AS Customer_Category_key
-        , bill_to_customer_id AS Buying_Group_key
+        , buying_group_id AS Buying_Group_key
         , primary_contact_person_id AS Primary_Contact_Person_key
         , delivery_method_id AS Delivery_Method_key
         , delivery_city_id AS Delivery_City_key
@@ -27,6 +28,7 @@ WITH dim_customer__source AS (
     SELECT 
         Cast(Customer_key AS INTEGER) AS Customer_key
         , Cast(customer_name AS STRING) AS customer_name
+        , Cast(Bill_to_customer_key AS INTEGER) AS Bill_to_customer_key
         , Cast(Customer_Category_key AS INTEGER) AS Customer_Category_key
         , Safe_Cast(Buying_Group_key AS INTEGER) AS Buying_Group_key
         , Cast(Primary_Contact_Person_key AS INTEGER) AS Primary_Contact_Person_key
@@ -65,6 +67,7 @@ WITH dim_customer__source AS (
     SELECT
         Customer_key
         , customer_name
+        , Bill_to_customer_key
         , Customer_Category_key
         , Buying_Group_key
         , Primary_Contact_Person_key
@@ -83,6 +86,7 @@ WITH dim_customer__source AS (
     SELECT
         0 AS Customer_key
         , 'Undefined' AS customer_name
+        , 0 AS Bill_to_customer_key
         , 0 AS CustomerCategory_key
         , 0 AS BuyingGroup_key
         , 0 AS Primary_Contact_Person_key
@@ -100,6 +104,7 @@ WITH dim_customer__source AS (
     SELECT
         -1 AS Customer_key
         , 'Invalid' AS customer_name
+        , -1 AS Bill_to_customer_key
         , -1 AS CustomerCategory_key
         , -1 AS BuyingGroup_key
         , -1 AS Primary_Contact_Person_key
@@ -118,6 +123,8 @@ SELECT
 
     dim_customer.Customer_key
     , dim_customer.customer_name
+    , dim_customer.Bill_to_customer_key
+    , Coalesce(dim_Bill_to_customer.customer_name, 'Invalid') AS Bill_to_customer_name
     , dim_customer.Customer_Category_key
     , Coalesce(stg_customer.CustomerCategory_name, 'Invalid') AS CustomerCategory_name 
     , Coalesce(dim_customer.Buying_Group_key, 0) AS Buying_Group_key
@@ -156,3 +163,6 @@ LEFT JOIN {{ ref("stg_dim_cities")}} AS stg_dim_Delivery_cities
 
 LEFT JOIN {{ ref("stg_dim_cities")}} AS stg_dim_Postal_cities
     ON dim_customer.Postal_City_key = stg_dim_Postal_cities.City_key
+
+LEFT JOIN dim_customer__add_undefined AS dim_Bill_to_customer
+    ON dim_customer.Bill_to_customer_key = dim_Bill_to_customer.Customer_key
