@@ -6,8 +6,8 @@ WITH stg_customer_categories__source AS (
 
 , stg_customer_categories__rename AS(
     SELECT
-        CustomerCategoryID AS CustomerCategory_key
-        , CustomerCategoryName AS CustomerCategory_name
+        customer_category_id AS CustomerCategory_key
+        , customer_category_name AS CustomerCategory_name
     FROM stg_customer_categories__source
 )
 

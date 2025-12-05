@@ -6,15 +6,15 @@ WITH fact_sales_order_line__source AS (
 )
 , fact_sales_order_line__rename AS (
   SELECT
-    OrderLineID  AS Sales_order_line_key
-    , OrderID AS Sales_Order_key
-    , StockItemID  AS Product_key
-    , PackageTypeID as Package_Type_key
-    , Quantity   
-    , UnitPrice  
-    , TaxRate
-    , PickedQuantity
-    , PickingCompletedWhen AS line_Picking_Completed_When
+    order_line_id  AS Sales_order_line_key
+    , order_id AS Sales_Order_key
+    , stock_item_id  AS Product_key
+    , package_type_id as Package_Type_key
+    , quantity   
+    , unit_price  
+    , tax_rate
+    , picked_quantity
+    , picking_completed_when AS line_Picking_Completed_When
   FROM fact_sales_order_line__source
 )
 
@@ -24,10 +24,10 @@ WITH fact_sales_order_line__source AS (
   , Cast(Sales_Order_key AS INTEGER) AS Sales_Order_key
   , Cast(Product_key AS STRING) AS Product_key
   , Cast( Package_Type_key AS INTEGER) AS Package_Type_key
-  , Cast(Quantity AS INTEGER) AS Quantity 
-  , Cast(UnitPrice AS NUMERIC) AS UnitPrice 
-  , Cast(TaxRate AS NUMERIC) AS Tax_Rate
-  , Cast(PickedQuantity AS INTEGER) AS Picked_Quantity
+  , Cast(quantity AS INTEGER) AS Quantity 
+  , Cast(unit_price AS NUMERIC) AS UnitPrice 
+  , Cast(tax_rate AS NUMERIC) AS Tax_Rate
+  , Cast(picked_quantity AS INTEGER) AS Picked_Quantity
   , Cast(line_Picking_Completed_When AS STRING) AS line_Picking_Completed_When
   FROM fact_sales_order_line__rename
 )

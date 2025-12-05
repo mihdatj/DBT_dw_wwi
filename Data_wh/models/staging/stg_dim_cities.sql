@@ -6,9 +6,9 @@ WITH stg_dim_cities__source AS (
 
 , stg_dim_cities__rename AS (
     SELECT
-        CityID AS City_key
-        , CityName AS City_Name
-        , StateProvinceID AS State_Province_key
+        city_id AS City_key
+        , city_name AS City_Name
+        , state_province_id AS State_Province_key
     FROM stg_dim_cities__source
 )
 

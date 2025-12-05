@@ -6,8 +6,8 @@ WITH stg_buying_group__source AS(
 
 , stg_buying_group__rename AS (
     SELECT
-        BuyingGroupID AS BuyingGroup_key
-        , BuyingGroupName AS BuyingGroup_name
+        buying_group_id AS BuyingGroup_key
+        , buying_group_name AS BuyingGroup_name
     FROM stg_buying_group__source
 )
 

@@ -3,14 +3,21 @@ WITH dim_customer__source AS (
         * 
     FROM `data-wh-mihdatj1.Wide_World_Importers.Sales_Customers`
 )
-
 , dim_customer__rename AS (
     SELECT
         CustomerID AS Customer_key
         , CustomerName
         , CustomerCategoryID AS CustomerCategory_key
         , BuyingGroupID AS BuyingGroup_key
+        , PrimaryContactPersonID AS Primary_Contact_Person_key
+        , DeliveryMethodID AS Delivery_Method_key
+        , DeliveryCityID AS Delivery_City_key
+        , CreditLimit
+        , AccountOpenedDate
+        , StandardDiscountPercentage
+        , IsStatementSent
         , IsOnCreditHold AS is_on_credit_hold_BOOLEAN 
+        , PaymentDays
     FROM dim_customer__source
 )
 

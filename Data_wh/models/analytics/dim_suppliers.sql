@@ -6,8 +6,8 @@ WITH dim_suppliers__source AS (
 
 , dim_suppliers__rename AS (
     SELECT
-        SupplierID AS Supplier_key
-        , SupplierName AS Supplier_name
+        supplier_id AS Supplier_key
+        , supplier_name AS Supplier_name
     FROM dim_suppliers__source
 )
 

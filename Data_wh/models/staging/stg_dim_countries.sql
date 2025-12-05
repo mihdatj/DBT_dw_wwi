@@ -6,8 +6,8 @@ WITH stg_dim_countries__source AS (
 
 , stg_dim_countries__rename AS (
     SELECT
-        CountryID AS Country_key
-        , CountryName AS Country_Name
+        country_id AS Country_key
+        , country_name AS Country_Name
     FROM stg_dim_countries__source
 )
 

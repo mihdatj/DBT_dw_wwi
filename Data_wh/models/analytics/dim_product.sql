@@ -6,11 +6,11 @@ WITH dim_product__source AS (
 
 , dim_product__rename AS(
     SELECT
-        StockItemID AS Product_key
-        , SupplierId AS Supplier_key
-        , StockItemName AS Product_name
-        , Brand AS Brand_name
-        , IsChillerStock AS Is_Chiller_Stock
+        stock_item_id AS Product_key
+        , supplier_id AS Supplier_key
+        , stock_item_name AS Product_name
+        , brand AS Brand_name
+        , is_chiller_stock AS Is_Chiller_Stock
     FROM dim_product__source
 )
 

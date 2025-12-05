@@ -7,10 +7,10 @@ WITH stg_dim_State_Provinces__source AS (
 
 , stg_dim_State_Provinces__rename AS (
     SELECT
-        StateProvinceID AS State_Province_key
-        , StateProvinceCode AS State_Province_Code
-        , StateProvinceName AS State_Province_Name
-        , CountryID AS Country_key
+        state_province_id AS State_Province_key
+        , state_province_code AS State_Province_Code
+        , state_province_name AS State_Province_Name
+        , country_id AS Country_key
     FROM stg_dim_State_Provinces__source
 )
 

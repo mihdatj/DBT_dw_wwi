@@ -5,14 +5,14 @@ WITH stg_fact_sales_order__source AS (
 )
 , stg_fact_sales_order__rename AS (
     SELECT 
-        OrderID AS Sales_Order_key
-        , CustomerID AS Customer_key
-        , PickedByPersonID AS Picked_By_Person_key
-        , OrderDate
-        , BackorderOrderID AS Back_Order_key
-        , ExpectedDeliveryDate AS Expected_Delivery_Date
-        , IsUndersupplyBackordered AS Is_Under_supply_Backordered_boolean
-        , PickingCompletedWhen AS Order_Picking_Completed_When
+        order_id AS Sales_Order_key
+        , customer_id AS Customer_key
+        , picked_by_person_id AS Picked_By_Person_key
+        , order_date
+        , backorder_order_id AS Back_Order_key
+        , expected_delivery_date AS Expected_Delivery_Date
+        , is_undersupply_backordered AS Is_Under_supply_Backordered_boolean
+        , picking_completed_when AS Order_Picking_Completed_When
     FROM stg_fact_sales_order__source
 )
 
@@ -21,7 +21,7 @@ WITH stg_fact_sales_order__source AS (
         Cast( Sales_Order_key AS INTEGER) AS Sales_Order_key
         , Cast(Customer_key AS INTEGER) AS Customer_key
         , SAFE_Cast(Picked_By_Person_key AS INTEGER) AS Picked_By_Person_key
-        , Cast(OrderDate AS DATE) AS OrderDate
+        , Cast(order_date AS DATE) AS OrderDate
         , Cast(Back_Order_key AS INTEGER) AS Back_Order_key
         , CAST(Expected_Delivery_Date AS DATE) AS Expected_Delivery_Date
         , CAST(Is_Under_supply_Backordered_boolean AS BOOLEAN) AS Is_Under_supply_Backordered_boolean

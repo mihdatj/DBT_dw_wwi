@@ -6,8 +6,8 @@ WITH stg_dim_Delivery_Method__source AS (
 
 , stg_dim_Delivery_Method__rename AS( 
     SELECT
-        DeliveryMethodID AS Delivery_Method_key
-        , DeliveryMethodName AS Delivery_Method_Name
+        delivery_method_id AS Delivery_Method_key
+        , delivery_method_name AS Delivery_Method_Name
     FROM stg_dim_Delivery_Method__source
 )
 

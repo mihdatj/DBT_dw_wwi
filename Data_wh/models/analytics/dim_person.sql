@@ -6,15 +6,15 @@ WITH dim_person__source AS (
 
 , dim_person__rename AS (
     SELECT
-        PersonID AS person_key
-        , FullName 
+        person_id AS person_key
+        , full_name 
     FROM dim_person__source
 )
 
 , dim_person__cast_type AS (
     SELECT 
         Cast(person_key AS INTEGER) AS person_key
-        , Cast(FullName AS STRING) AS FullName
+        , Cast(full_name AS STRING) AS FullName
     FROM dim_person__rename
 )
 

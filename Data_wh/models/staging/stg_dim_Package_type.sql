@@ -6,8 +6,8 @@ WITH stg_dim_Package_type__Source AS (
 
 , stg_dim_Package_type__rename AS (
     SELECT
-        PackageTypeID AS Package_Type_key
-        , PackageTypeName AS Package_Type_Name
+        package_type_id AS Package_Type_key
+        , package_type_name AS Package_Type_Name
     FROM stg_dim_Package_type__Source
 )
 
