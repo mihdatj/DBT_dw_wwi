@@ -38,8 +38,12 @@ SELECT
   , fact_line.Sales_Order_key
   , fact_line.Product_key
   , Coalesce(fact_header.Customer_key, -1) AS Customer_key
+  , Coalesce(fact_header.Customer_name, 'Invalid') AS Customer_name
   , fact_line.Package_Type_key
+  , Coalesce(stg_dim_Package_type.Package_Type_Name, 'Invalid') AS Package_Type_Name
+  , Coalesce(fact_header.Sales_person_person_key, -1) AS Sales_person_person_key
   , Coalesce(fact_header.Picked_By_Person_key, -1) AS Picked_By_Person_key
+  , Coalesce(fact_header.Contact_person_key, -1) AS Contact_person_key
   , fact_line.Quantity 
   , fact_line.UnitPrice 
   , fact_line.Quantity * fact_line.UnitPrice  AS Grossamount
@@ -50,6 +54,12 @@ SELECT
   , fact_header.Expected_Delivery_Date
   , fact_header.Is_Under_supply_Backordered
   , fact_header.Order_Picking_Completed_When
+
 FROM fact_sales_order_line__cast_type AS fact_line
+
 LEFT JOIN {{ ref('stg_fact_sales_order')}} AS  fact_header
-ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
+  ON fact_line.Sales_Order_key = fact_header.Sales_Order_key
+
+LEFT JOIN {{ ref("stg_dim_Package_type")}} AS stg_dim_Package_type
+ON fact_line.Package_Type_key = stg_dim_Package_type.Package_Type_key
+
