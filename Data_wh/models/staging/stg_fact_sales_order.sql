@@ -7,7 +7,9 @@ WITH stg_fact_sales_order__source AS (
     SELECT 
         order_id AS Sales_Order_key
         , customer_id AS Customer_key
+        , salesperson_person_id AS Sales_person_person_key
         , picked_by_person_id AS Picked_By_Person_key
+        , contact_person_id AS Contact_person_key
         , order_date
         , backorder_order_id AS Back_Order_key
         , expected_delivery_date AS Expected_Delivery_Date
@@ -20,7 +22,9 @@ WITH stg_fact_sales_order__source AS (
     SELECT
         Cast( Sales_Order_key AS INTEGER) AS Sales_Order_key
         , Cast(Customer_key AS INTEGER) AS Customer_key
-        , SAFE_Cast(Picked_By_Person_key AS INTEGER) AS Picked_By_Person_key
+        , Cast(Sales_person_person_key AS INTEGER) AS Sales_person_person_key
+        , SAFE_Cast(Picked_By_Person_key AS NUMERIC) AS Picked_By_Person_key
+        , Cast(Contact_person_key AS INTEGER) AS Contact_person_key
         , Cast(order_date AS DATE) AS OrderDate
         , Cast(Back_Order_key AS INTEGER) AS Back_Order_key
         , CAST(Expected_Delivery_Date AS DATE) AS Expected_Delivery_Date
@@ -41,12 +45,19 @@ WITH stg_fact_sales_order__source AS (
 )
 
 SELECT
-    Sales_Order_key
-    , Customer_key
-    , Coalesce(Picked_By_Person_key, 0) AS Picked_By_Person_key
-    , COALESCE(Back_Order_key, 0) AS Back_Order_key
-    , OrderDate
-    , Expected_Delivery_Date 
-    , Is_Under_supply_Backordered
-    , Order_Picking_Completed_When
-FROM stg_fact_sales_order__conver_boolean
+    stg_fact_sales_order.Sales_Order_key
+    , stg_fact_sales_order.Customer_key
+    , Coalesce(dim_customer.customer_name,'Invalid') AS Customer_name
+    , stg_fact_sales_order.Sales_person_person_key
+    , Coalesce(stg_fact_sales_order.Picked_By_Person_key, 0) AS Picked_By_Person_key
+    , COALESCE(stg_fact_sales_order.Back_Order_key, 0) AS Back_Order_key
+    , stg_fact_sales_order.Contact_person_key
+    , stg_fact_sales_order.OrderDate
+    , stg_fact_sales_order.Expected_Delivery_Date 
+    , stg_fact_sales_order.Is_Under_supply_Backordered
+    , stg_fact_sales_order.Order_Picking_Completed_When
+
+FROM stg_fact_sales_order__conver_boolean AS stg_fact_sales_order
+
+LEFT JOIN {{ ref("dim_customer")}} AS dim_customer
+    ON stg_fact_sales_order.Customer_key = dim_customer.Customer_key
