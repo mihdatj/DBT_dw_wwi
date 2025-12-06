@@ -18,6 +18,23 @@ WITH stg_dim_Package_type__Source AS (
     FROM stg_dim_Package_type__rename
 )
 
+, stg_dim_Package_type__add_undefined AS (
+    SELECT
+        Package_Type_key
+        , Package_Type_Name
+    FROM stg_dim_Package_type__cast_type
+
+    UNION ALL
+    SELECT
+        0 AS Package_Type_key
+        , 'Undefine' AS Package_Type_Name
+
+    UNION ALL
+    SELECT
+        -1 AS Package_Type_key
+        , 'Invalid' AS Package_Type_Name
+)
+
 SELECT 
     Package_Type_key
     , Package_Type_Name

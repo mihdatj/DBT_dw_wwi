@@ -112,4 +112,3 @@ LEFT JOIN {{ ref("stg_dim_cities")}} AS stg_dim_Postal_cities
     ON dim_product.Postal_City_key = stg_dim_Postal_cities.City_key
 
 
-

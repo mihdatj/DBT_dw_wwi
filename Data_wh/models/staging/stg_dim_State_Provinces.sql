@@ -10,7 +10,6 @@ WITH stg_dim_State_Provinces__source AS (
         state_province_id AS State_Province_key
         , state_province_code AS State_Province_Code
         , state_province_name AS State_Province_Name
-        , country_id AS Country_key
     FROM stg_dim_State_Provinces__source
 )
 
@@ -18,17 +17,32 @@ WITH stg_dim_State_Provinces__source AS (
     SELECT
         Cast(State_Province_key AS INTEGER) AS State_Province_key
         , Cast(State_Province_Code AS STRING) AS State_Province_Code
-        , Cast(State_Province_Name AS STRING) AS State_Province_Name
-        , Cast(Country_key AS INTEGER) AS Country_key
+        , Cast(State_Province_Name AS STRING) AS State_Province_Name 
     FROM stg_dim_State_Provinces__rename
 )
 
+, stg_dim_State_Provinces__add_undefined AS (
+    SELECT
+        State_Province_key
+        , State_Province_Code
+        , State_Province_Name
+    FROM stg_dim_State_Provinces__cast_type
+
+    UNION ALL
+    SELECT
+        0 AS State_Province_key
+        , 'Undefine' AS State_Province_Code
+        , 'Undefine' AS State_Province_Name
+
+    UNION ALL
+    SELECT
+        -1 AS State_Province_key
+        , 'Invalid' AS State_Province_Code
+        , 'Invalid' AS State_Province_Name
+)
 SELECT
-    stg_dim_State_Provinces. State_Province_key
-    , stg_dim_State_Provinces.State_Province_Code
-    , stg_dim_State_Provinces.State_Province_Name
-    , stg_dim_State_Provinces.Country_key
-    , stg_dim_countries.Country_Name
-FROM stg_dim_State_Provinces__cast_type AS stg_dim_State_Provinces
-LEFT JOIN {{ ref("stg_dim_countries")}} AS stg_dim_countries
-ON stg_dim_State_Provinces.Country_key = stg_dim_countries.Country_key
+    State_Province_key
+    , State_Province_Code
+    , State_Province_Name
+FROM stg_dim_State_Provinces__add_undefined 
+

@@ -18,6 +18,23 @@ WITH stg_dim_Delivery_Method__source AS (
     FROM stg_dim_Delivery_Method__rename
 )
 
+, stg_dim_Delivery_Method__add_undefined AS (
+    SELECT
+        Delivery_Method_key
+        , Delivery_Method_Name
+    FROM stg_dim_Delivery_Method__cast_type
+
+    UNION ALL
+    SELECT
+        0 AS Delivery_Method_key
+        , 'Undefine' AS Delivery_Method_Name
+
+    UNION ALL
+    SELECT
+        -1 AS Delivery_Method_key
+        , 'Invalid' AS Delivery_Method_Name
+)
+
 SELECT
     Delivery_Method_key
     , Delivery_Method_Name

@@ -20,14 +20,33 @@ WITH stg_dim_cities__source AS (
     FROM stg_dim_cities__rename
 )
 
+, stg_dim_State_Provinces__add_undefined AS (
+    SELECT
+        City_key
+        , City_Name
+        , State_Province_key
+    FROM stg_dim_cities__cast_type
+
+    UNION ALL
+    SELECT
+        0 AS City_key
+        , 'Undefine' AS City_Name
+        , 0 AS State_Province_key
+
+    UNION ALL
+    SELECT
+        -1 AS City_key
+        , 'Invalid' AS City_Name
+        , -1 AS State_Province_key
+)
+
 SELECT
     stg_dim_cities.City_key
     , stg_dim_cities.City_Name
     , stg_dim_cities.State_Province_key
-    , stg_dim_State_Provinces.State_Province_Code
     , stg_dim_State_Provinces.State_Province_Name
-    , stg_dim_State_Provinces.Country_key
-    , stg_dim_State_Provinces.Country_Name
+    
 FROM stg_dim_cities__cast_type AS stg_dim_cities
-LEFT JOIN {{ ref("stg_dim_State_Provinces")}} AS stg_dim_State_Provinces
-ON stg_dim_cities.State_Province_key = stg_dim_State_Provinces.State_Province_key
+
+LEFT JOIN {{ref("stg_dim_State_Provinces")}} AS stg_dim_State_Provinces
+    ON stg_dim_cities.State_Province_key = stg_dim_State_Provinces.State_Province_key

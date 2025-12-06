@@ -18,6 +18,23 @@ WITH stg_dim_color__source AS (
     FROM stg_dim_color__rename
 )
 
+, stg_dim_color__add_undefined AS (
+    SELECT
+        Color_key
+        , Color_name
+    FROM stg_dim_color__cast_type
+
+    UNION ALL
+    SELECT
+        0 AS Color_key
+        , 'Undefine' AS Color_name
+
+    UNION ALL
+    SELECT
+        -1 AS Color_key
+        , 'Invalid' AS Color_name
+)
+
 SELECT
     Color_key
     , Color_name

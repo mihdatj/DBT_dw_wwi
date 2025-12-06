@@ -17,7 +17,25 @@ WITH stg_Supplier_Categories__source AS (
         , Cast(supplier_category_name AS String) AS supplier_category_name
     FROM stg_Supplier_Categories__rename
 )
+
+, stg_Supplier_Categories__add_undefined AS (
+    SELECT
+        supplier_category_key
+        , supplier_category_name
+    FROM stg_Supplier_Categories__cast_type
+
+    UNION ALL
+    SELECT
+        0 AS supplier_category_key
+        , 'Undefine' AS State_Province_Code
+
+    UNION ALL
+    SELECT
+        -1 AS supplier_category_key
+        , 'Invalid' AS supplier_category_name
+)
+
 SELECT
     supplier_category_key
     , supplier_category_name
-FROM stg_Supplier_Categories__cast_type
+FROM stg_Supplier_Categories__add_undefined
